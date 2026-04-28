@@ -199,7 +199,7 @@ function generateTweetUrl(stats: CodexStats): string {
     `Total Estimated Cost: ${stats.hasUsageCost ? formatCostFull(stats.totalCost) : "N/A"}`
   );
   lines.push("");
-  lines.push("Get yours: npx codex-meter");
+  lines.push("Get yours: npx @colinwjliu/codex-meter");
   lines.push("");
   lines.push("Credit: @nummanali @moddi3io");
   lines.push("");

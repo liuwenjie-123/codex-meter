@@ -31,13 +31,13 @@ Generate a personalized "Spotify Wrapped"-style summary of your [Codex](https://
 Run directly without installing:
 
 ```bash
-npx codex-meter # or bunx, or yarn/pnpm dlx
+npx @colinwjliu/codex-meter # or bunx, or yarn/pnpm dlx
 ```
 
 ### Global Install
 
 ```bash
-npm install -g codex-meter # or bun/yarn/pnpm
+npm install -g @colinwjliu/codex-meter # or bun/yarn/pnpm
 ```
 
 Then run anywhere:

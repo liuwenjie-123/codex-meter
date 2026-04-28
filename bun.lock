@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "codex-meter",
+      "name": "@colinwjliu/codex-meter",
       "dependencies": {
         "@clack/prompts": "^0.11.0",
         "@resvg/resvg-wasm": "^2.6.2",
