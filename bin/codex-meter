@@ -23,6 +23,36 @@ function run(target) {
   process.exit(code);
 }
 
+function runCommand(command, args) {
+  const result = spawnSync(command, args, {
+    stdio: "inherit",
+  });
+  if (result.error) {
+    return false;
+  }
+  const code = typeof result.status === "number" ? result.status : 0;
+  process.exit(code);
+}
+
+function findBun() {
+  const exe = osPlatform() === "win32" ? "bun.exe" : "bun";
+  const candidates = [
+    "bun",
+    process.env.BUN_INSTALL ? join(process.env.BUN_INSTALL, "bin", exe) : undefined,
+    process.env.USERPROFILE ? join(process.env.USERPROFILE, ".bun", "bin", exe) : undefined,
+    process.env.HOME ? join(process.env.HOME, ".bun", "bin", exe) : undefined,
+  ].filter(Boolean);
+
+  for (const candidate of candidates) {
+    if (candidate === "bun" || fs.existsSync(candidate)) {
+      const result = spawnSync(candidate, ["--version"], { stdio: "ignore" });
+      if (!result.error && result.status === 0) {
+        return candidate;
+      }
+    }
+  }
+}
+
 const platformMap = {
   darwin: "darwin",
   linux: "linux",
@@ -71,6 +101,12 @@ function findBinary(startDir) {
 
 const resolved = findBinary(__dirname);
 if (!resolved) {
+  const sourceEntry = join(__dirname, "..", "src", "index.ts");
+  const bun = findBun();
+  if (bun && fs.existsSync(sourceEntry) && runCommand(bun, [sourceEntry, ...process.argv.slice(2)])) {
+    process.exit(0);
+  }
+
   console.error(
     `It seems that your package manager failed to install the right version of ${CLI_NAME} CLI for your platform. You can try manually installing "${base}" package`
   );
