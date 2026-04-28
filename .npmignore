@@ -5,6 +5,7 @@ scripts/build-npm.ts
 # Development
 tsconfig.json
 bun.lock
+/*.png
 
 # Build artifacts
 dist/

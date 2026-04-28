@@ -99,18 +99,23 @@ function findBinary(startDir) {
   }
 }
 
-const resolved = findBinary(__dirname);
-if (!resolved) {
-  const sourceEntry = join(__dirname, "..", "src", "index.ts");
+const sourceEntry = join(__dirname, "..", "src", "index.ts");
+if (fs.existsSync(sourceEntry)) {
   const bun = findBun();
-  if (bun && fs.existsSync(sourceEntry) && runCommand(bun, [sourceEntry, ...process.argv.slice(2)])) {
+  if (bun && runCommand(bun, [sourceEntry, ...process.argv.slice(2)])) {
     process.exit(0);
   }
 
+  console.error(`${CLI_NAME} requires Bun to run from the npm source package.`);
+  console.error("Install Bun from https://bun.sh, then run this command again without sudo.");
+  process.exit(1);
+}
+
+const resolved = findBinary(__dirname);
+if (!resolved) {
   console.error(
     `It seems that your package manager failed to install the right version of ${CLI_NAME} CLI for your platform. You can try manually installing "${base}" package`
   );
   process.exit(1);
 }
-
 run(resolved);
