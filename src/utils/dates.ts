@@ -96,6 +96,10 @@ export function isWrappedAvailable(year: number): { available: boolean; message?
     };
   }
 
+  if (year === currentYear) {
+    return { available: true };
+  }
+
   const decemberLaunchDay = 20;
   if (currentMonth < 12 || (currentMonth === 12 && currentDay < decemberLaunchDay)) {
     const daysUntil = calculateDaysUntilLaunch(now, decemberLaunchDay);
