@@ -1,6 +1,6 @@
 {
   "name": "@colinwjliu/codex-meter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Numman Ali",
     "email": "numman.ali@gmail.com"
@@ -24,8 +24,8 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "codex-meter": "bin/codex-meter",
-    "codex-wrapped": "bin/codex-meter"
+    "codex-meter": "bin/codex-meter.js",
+    "codex-wrapped": "bin/codex-meter.js"
   },
   "scripts": {
     "start": "bun src/index.ts",
