@@ -1,13 +1,8 @@
-# Source files
-src/
+# Build-only scripts
 scripts/build.ts
 scripts/build-npm.ts
 
-# Assets (bundled into binary)
-assets/
-
 # Development
-*.ts
 tsconfig.json
 bun.lock
 
