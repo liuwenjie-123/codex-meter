@@ -9,7 +9,7 @@
   "homepage": "https://github.com/liuwenjie-123/codex-meter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/liuwenjie-123/codex-meter.git"
+    "url": "git+https://github.com/liuwenjie-123/codex-meter.git"
   },
   "bugs": {
     "url": "https://github.com/liuwenjie-123/codex-meter/issues"
@@ -24,14 +24,14 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "codex-meter": "./bin/codex-meter",
-    "codex-wrapped": "./bin/codex-meter"
+    "codex-meter": "bin/codex-meter",
+    "codex-wrapped": "bin/codex-meter"
   },
   "scripts": {
     "start": "bun src/index.ts",
     "dev": "bun run --watch src/index.ts",
     "build": "tsgo --noEmit && bun run scripts/build.ts",
-    "publish": "bun run scripts/publish.ts",
+    "publish:platforms": "bun run scripts/publish.ts",
     "release": "semantic-release",
     "clean": "rm -rf dist"
   },
