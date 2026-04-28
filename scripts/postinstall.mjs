@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Postinstall script for codex-wrapped
+ * Postinstall script for codex-meter
  *
  * This script runs after npm install and symlinks the correct platform-specific
  * binary to the bin directory. It auto-detects:
@@ -20,6 +20,8 @@ import { createRequire } from "module";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
+const CLI_NAME = "codex-meter";
+const REPOSITORY_URL = "https://github.com/liuwenjie-123/codex-meter";
 
 /**
  * Detect if the system uses musl libc (Alpine Linux, etc.)
@@ -80,7 +82,7 @@ function detectAVX2() {
 /**
  * Get the platform-specific package name
  */
-function getPackageName() {
+function getPackageNames() {
   let platform;
   switch (os.platform()) {
     case "darwin":
@@ -93,7 +95,7 @@ function getPackageName() {
       platform = "windows";
       break;
     default:
-      return null;
+      return [];
   }
 
   let arch;
@@ -105,11 +107,11 @@ function getPackageName() {
       arch = "arm64";
       break;
     default:
-      return null;
+      return [];
   }
 
-  // Build package name parts
-  const parts = ["codex-wrapped", platform, arch];
+  const baseParts = [CLI_NAME, platform, arch];
+  const parts = [...baseParts];
 
   // Add baseline suffix for x64 without AVX2
   if (arch === "x64" && !detectAVX2()) {
@@ -121,14 +123,14 @@ function getPackageName() {
     parts.push("musl");
   }
 
-  return parts.join("-");
+  return Array.from(new Set([parts.join("-"), baseParts.join("-")]));
 }
 
 /**
  * Find the binary from the platform package
  */
 function findBinary(packageName) {
-  const binaryName = os.platform() === "win32" ? "codex-wrapped.exe" : "codex-wrapped";
+  const binaryName = os.platform() === "win32" ? `${CLI_NAME}.exe` : CLI_NAME;
 
   try {
     const packageJsonPath = require.resolve(`${packageName}/package.json`);
@@ -198,44 +200,32 @@ function linkBinary(sourcePath, binaryName) {
 
 async function main() {
   try {
-    const packageName = getPackageName();
+    const packageNames = getPackageNames();
 
-    if (!packageName) {
-      console.error(`codex-wrapped: Unsupported platform: ${os.platform()}-${os.arch()}`);
+    if (packageNames.length === 0) {
+      console.error(`${CLI_NAME}: Unsupported platform: ${os.platform()}-${os.arch()}`);
       console.error("Please download the binary manually from:");
-      console.error("https://github.com/numman-ali/codex-wrapped/releases");
+      console.error(`${REPOSITORY_URL}/releases`);
       process.exit(0); // Exit gracefully
     }
 
-    console.log(`codex-wrapped: Detected platform package: ${packageName}`);
+    for (const packageName of packageNames) {
+      console.log(`${CLI_NAME}: Trying platform package: ${packageName}`);
+      const result = findBinary(packageName);
 
-    const result = findBinary(packageName);
-
-    if (!result) {
-      // Try fallback without baseline/musl
-      const baseParts = packageName.split("-").slice(0, 3);
-      const basePackage = baseParts.join("-");
-
-      if (basePackage !== packageName) {
-        console.log(`codex-wrapped: Trying fallback package: ${basePackage}`);
-        const fallbackResult = findBinary(basePackage);
-
-        if (fallbackResult) {
-          linkBinary(fallbackResult.binaryPath, fallbackResult.binaryName);
-          return;
-        }
+      if (result) {
+        linkBinary(result.binaryPath, result.binaryName);
+        return;
       }
-
-      console.error(`codex-wrapped: Could not find binary for ${packageName}`);
-      console.error("The optional dependency may have failed to install.");
-      console.error("Please download the binary manually from:");
-      console.error("https://github.com/numman-ali/codex-wrapped/releases");
-      process.exit(0);
     }
 
-    linkBinary(result.binaryPath, result.binaryName);
+    console.error(`${CLI_NAME}: Could not find binary for ${packageNames.join(" or ")}`);
+    console.error("The optional dependency may have failed to install.");
+    console.error("Please download the binary manually from:");
+    console.error(`${REPOSITORY_URL}/releases`);
+    process.exit(0);
   } catch (error) {
-    console.error("codex-wrapped: Postinstall error:", error.message);
+    console.error(`${CLI_NAME}: Postinstall error:`, error.message);
     process.exit(0); // Exit gracefully to not break npm install
   }
 }

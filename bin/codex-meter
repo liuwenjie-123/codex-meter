@@ -6,6 +6,8 @@ import { dirname, join } from "node:path";
 import { platform as osPlatform, arch as osArch } from "node:os";
 import { fileURLToPath } from "node:url";
 
+const CLI_NAME = "codex-meter";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -39,8 +41,9 @@ let arch = archMap[osArch()];
 if (!arch) {
   arch = osArch();
 }
-const base = "codex-wrapped-" + platform + "-" + arch;
-const binary = platform === "windows" ? "codex-wrapped.exe" : "codex-wrapped";
+
+const base = `${CLI_NAME}-${platform}-${arch}`;
+const binary = platform === "windows" ? `${CLI_NAME}.exe` : CLI_NAME;
 
 function findBinary(startDir) {
   let current = startDir;
@@ -69,9 +72,7 @@ function findBinary(startDir) {
 const resolved = findBinary(__dirname);
 if (!resolved) {
   console.error(
-    'It seems that your package manager failed to install the right version of codex-wrapped CLI for your platform. You can try manually installing "' +
-      base +
-      '" package'
+    `It seems that your package manager failed to install the right version of ${CLI_NAME} CLI for your platform. You can try manually installing "${base}" package`
   );
   process.exit(1);
 }

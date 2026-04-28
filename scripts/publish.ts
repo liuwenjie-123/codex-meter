@@ -10,6 +10,9 @@ import { buildTargets } from "./build";
 
 const dir = path.resolve(import.meta.dir, "..");
 $.cwd(dir);
+const binaryAliases = Array.from(
+  new Set([targetpackageName, ...Object.keys(pkg.bin ?? {})])
+).sort();
 
 const args = Bun.argv.slice(2);
 const dryRun = args.includes("--dry-run");
@@ -77,7 +80,7 @@ await Bun.file(`./dist/${targetpackageName}/package.json`).write(
       name: pkg.name,
       version,
       description: pkg.description,
-      bin: { [targetpackageName]: `./bin/${targetpackageName}` },
+      bin: Object.fromEntries(binaryAliases.map((name) => [name, `./bin/${targetpackageName}`])),
       scripts: { postinstall: "node ./postinstall.mjs" },
       optionalDependencies: binaries,
       repository: pkg.repository,

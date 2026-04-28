@@ -17,12 +17,12 @@ const VERSION = "1.0.0";
 
 function printHelp() {
   console.log(`
-codex-wrapped v${VERSION}
+codex-meter v${VERSION}
 
 Generate your Codex year in review stats card.
 
 USAGE:
-  codex-wrapped [OPTIONS]
+  codex-meter [OPTIONS]
 
 OPTIONS:
   --year <YYYY>    Generate wrapped for a specific year (default: current year)
@@ -30,8 +30,8 @@ OPTIONS:
   --version, -v    Show version number
 
 EXAMPLES:
-  codex-wrapped              # Generate current year wrapped
-  codex-wrapped --year 2025  # Generate 2025 wrapped
+  codex-meter              # Generate current year wrapped
+  codex-meter --year 2025  # Generate 2025 wrapped
 `);
 }
 
@@ -54,7 +54,7 @@ async function main() {
   }
 
   if (values.version) {
-    console.log(`codex-wrapped v${VERSION}`);
+    console.log(`codex-meter v${VERSION}`);
     process.exit(0);
   }
 
@@ -199,7 +199,7 @@ function generateTweetUrl(stats: CodexStats): string {
     `Total Estimated Cost: ${stats.hasUsageCost ? formatCostFull(stats.totalCost) : "N/A"}`
   );
   lines.push("");
-  lines.push("Get yours: npx codex-wrapped");
+  lines.push("Get yours: npx codex-meter");
   lines.push("");
   lines.push("Credit: @nummanali @moddi3io");
   lines.push("");

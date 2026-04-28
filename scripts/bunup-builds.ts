@@ -9,7 +9,7 @@ type Target = {
   avx2?: false;
 };
 
-export const targetpackageName = "codex-wrapped";
+export const targetpackageName = "codex-meter";
 export const getTargetName = (item: Target) => {
   return [
     targetpackageName,

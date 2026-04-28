@@ -1,29 +1,31 @@
 {
-  "name": "codex-wrapped",
+  "name": "codex-meter",
   "version": "1.0.0",
   "author": {
     "name": "Numman Ali",
     "email": "numman.ali@gmail.com"
   },
   "description": "Generate a personalized Spotify Wrapped-style summary of your Codex usage",
-  "homepage": "https://github.com/numman-ali/codex-wrapped",
+  "homepage": "https://github.com/liuwenjie-123/codex-meter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/numman-ali/codex-wrapped.git"
+    "url": "https://github.com/liuwenjie-123/codex-meter.git"
   },
   "bugs": {
-    "url": "https://github.com/numman-ali/codex-wrapped/issues"
+    "url": "https://github.com/liuwenjie-123/codex-meter/issues"
   },
   "keywords": [
     "codex",
     "openai",
     "wrapped",
-    "codex-wrapped"
+    "codex-wrapped",
+    "codex-meter"
   ],
   "license": "MIT",
   "type": "module",
   "bin": {
-    "codex-wrapped": "./bin/codex-wrapped"
+    "codex-meter": "./bin/codex-meter",
+    "codex-wrapped": "./bin/codex-meter"
   },
   "scripts": {
     "start": "bun src/index.ts",
